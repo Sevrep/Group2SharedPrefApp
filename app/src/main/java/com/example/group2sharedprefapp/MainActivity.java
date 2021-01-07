@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         bt.setOnClickListener(v -> {
             savePreferences(et1.getText().toString().trim(), et2.getText().toString().trim(), et3.getText().toString().trim());
             customToast(sharedPref.getString(NAME, "No name found."), sharedPref.getString(PASSWORD, "No password found."), sharedPref.getString(EMAIL, "No email found."));
+            stringBuffer(sharedPref.getString(NAME, "No name found."), sharedPref.getString(PASSWORD, "No password found."), sharedPref.getString(EMAIL, "No email found."));
         });
     }
 
@@ -47,6 +49,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void customToast(String n, String pw, String e) {
-        Toast.makeText(this, "Name: " + n + "\n" + "Password: " + pw + "\n" + "Email: " + e, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Name: " + n + "\n" + "Password: " + pw + "\n" + "Email: " + e, Toast.LENGTH_SHORT).show();
+        clearEntries();
+    }
+
+    private void stringBuffer(String n, String pw, String e) {
+        String buffer = "Name: " + n + "\n" +
+                "Password: " + pw + "\n" +
+                "Email: " + e + "\n\n";
+        showMessage(buffer);
+    }
+
+    private void clearEntries() {
+        et1.setText("");
+        et2.setText("");
+        et3.setText("");
+    }
+
+    private void showMessage(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Shared Preferences");
+        builder.setMessage(message);
+        builder.show();
     }
 }
